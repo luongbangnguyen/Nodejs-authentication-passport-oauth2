@@ -1,0 +1,93 @@
+doctype html
+extends ./layout.jade
+block title
+  title Index
+block content
+  .row
+    .col-md-8
+      a.btn.btn-success(href="/register-user-client-oauth2",style="margin-top:20px; float: right;")
+        | Create user and client oauth2
+  form#formGenAccessToken(method="post",action="/oauth/token")
+    .row
+      .col-md-8
+        .panel.panel-primary(style="margin-top:20px")
+          .panel-heading
+            h2.panel-title User oauth2
+          .panel-body
+            div.form-horizontal
+              .form-group
+                label.col-sm-3.control-label User name
+                .col-sm-9
+                  input#txtUser.form-control(type="text",name="username" placeholder="User name")
+              .form-group
+                label.col-sm-3.control-label Password
+                .col-sm-9
+                  input#txtPwdUser.form-control(type="password",name="passwordUser" placeholder="Password")
+    .row  
+      .col-md-8
+        .panel.panel-success
+          .panel-heading
+            h2.panel-title Client oauth2
+          .panel-body
+            div.form-horizontal
+              .form-group
+                label.col-sm-3.control-label Client name
+                .col-sm-9
+                  input#txtClient.form-control(type="text",name="clientname", placeholder="User name")
+              .form-group
+                label.col-sm-3.control-label Password
+                .col-sm-9
+                  input#txtPwdClient.form-control(type="password",name="passwordClientName", placeholder="Password")
+              .form-group
+                .col-sm-offset-2.col-sm-9
+    .row
+      .alert.alert-success#alertToken
+        a.close(href="#", data-dismiss="alert", aria-label="close") &#215;
+        strong#lblAccessToken
+    button.btn.btn-success(type="submit") Genarate access token
+  script().
+    $('document').ready(function(){
+      $("#alertToken").hide();   
+      $("#formGenAccessToken").submit(function(event){
+        event.preventDefault();
+        var path = $(this).attr('action');
+        var username = $("#txtUser").val();
+        var userpassword = $("#txtPwdUser").val();
+        var clientname = $("#txtClient").val();
+        var clientpassword = $("#txtPwdClient").val();
+        getAcessToken(path,username, userpassword, clientname, clientpassword);
+      }); 
+    });
+
+    function setEmptyFields(){
+      var username = $("#txtUser").val("");
+      var userpassword = $("#txtPwdUser").val("");
+      var clientname = $("#txtClient").val("");
+      var clientpassword = $("#txtPwdClient").val("");
+    }
+
+    function getAcessToken(path,username, userpassword, clientname, clientpassword){
+      $.ajax({
+          type: "POST",
+          url: path,
+          dataType: 'json',
+          headers: {
+            "Authorization": "Basic " + btoa(clientname + ":" + clientpassword)
+          },
+          data: {
+            grant_type : 'password',
+            username : username,
+            password : userpassword
+          },
+          success: function (data){
+            $("#lblAccessToken").html(JSON.stringify(data));
+            $("#alertToken").show();
+            setEmptyFields();
+          },
+          error : function (data){
+            console.log(data);
+          }
+        });
+    }
+    
+

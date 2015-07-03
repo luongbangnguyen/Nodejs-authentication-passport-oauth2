@@ -1,0 +1,57 @@
+doctype html
+extends ./layout.jade
+block title
+  title create user and client oauth2
+block content
+  form#FormGenAccessToken(method="post",action="/register-user-client-oauth2")
+    .row
+      .col-md-8
+        .panel.panel-primary(style="margin-top:20px")
+          .panel-heading
+            h2.panel-title Create user oauth2
+          .panel-body
+            div.form-horizontal
+              .form-group
+                label.col-sm-3.control-label User name
+                .col-sm-9
+                  input#txtUser.form-control(type="text",name="username" placeholder="User name")
+              .form-group
+                label.col-sm-3.control-label Password
+                .col-sm-9
+                  input#txtPwdUser.form-control(type="password",name="password" placeholder="Password")
+              .form-group
+                label.col-sm-3.control-label First name 
+                .col-sm-9
+                  input#txtFirstName.form-control(type="text",name="firstname", placeholder="Fist name")
+              .form-group
+                label.col-sm-3.control-label Last name 
+                .col-sm-9
+                  input#txtLastName.form-control(type="text",name="lastname", placeholder="Last name")
+              .form-group
+                label.col-sm-3.control-label Email 
+                .col-sm-9
+                  input#txtLastName.form-control(type="email",name="email", placeholder="Email")
+    .row
+        .col-md-8
+          .panel.panel-primary
+            .panel-heading
+              h2.panel-title Create client oauth2
+            .panel-body
+              div.form-horizontal
+                .form-group
+                  label.col-sm-3.control-label Client name
+                  .col-sm-9
+                    input#txtClientName.form-control(type="text",name="clientId", placeholder="User name")
+                .form-group
+                  label.col-sm-3.control-label Password
+                  .col-sm-9
+                    input#txtClientPassword.form-control(type="password",name="clientSecret", placeholder="Password")
+                .form-group
+                  .col-sm-offset-2.col-sm-9 
+    if(err)
+      .row
+        .col-md-8
+          .alert.alert-danger
+            a.close(href="#", data-dismiss="alert", aria-label="close") &#215;
+            strong Please check again infomations
+    button.btn.btn-success(type="submit") Create
